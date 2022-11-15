@@ -12,7 +12,7 @@ export const register = async (req, res, next) => {
         const phone_info = await Booker.findOne({phone: req.body.phone});
         if(email_info) return next(createError(404, 'Email already exist. Please login!'));
         if(phone_info) return next(createError(404, 'Phone already in use. Enter another!'));
-        if(phone_info) return next(createError(404, 'Email & Phone already in use. Enter another!'));
+        if(phone_info && email_info ) return next(createError(404, 'Email & Phone already in use. Enter another!'));
 
         const newBooker = new Booker({
             firstName: req.body.firstName,
