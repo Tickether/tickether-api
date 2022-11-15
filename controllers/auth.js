@@ -8,12 +8,12 @@ export const register = async (req, res, next) => {
         const salt = bcrypt.genSaltSync(10);
         const hash = bcrypt.hashSync(req.body.password, salt);
 
-        const booker_info = await Booker.findOne({email: req.body.email});
-        if(booker_info)
-            return res.status(200).json({
-            success:false,
-            message:'Booker already exist. Please login',
-        })
+        const email_info = await Booker.findOne({email: req.body.email});
+        if(email_info) return next(createError(404, 'Email already exist. Please login!'));
+
+        const phone_info = await Booker.findOne({email: req.body.email});
+        if(phone_info) return next(createError(404, 'Phone Number already in use. Enter another!'));
+
 
         const newBooker = new Booker({
             firstName: req.body.firstName,
