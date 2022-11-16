@@ -28,6 +28,7 @@ router.delete('/:id', verifyBooker, deleteBooker);
 
 //GET
 router.get('/:id', verifyBooker, getBooker);
+router.get('/:id/verify/:token', verifyBooker, getToken);
 
 //GET ALL
 router.get('/', verifyAdmin, getBookers);

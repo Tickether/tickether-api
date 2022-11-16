@@ -2,6 +2,10 @@ import Booker from '../models/Booker.js';
 import bcrypt from 'bcryptjs';
 import { createError } from '../utils/error.js';
 import jwt from 'jsonwebtoken';
+import Token from "../models/Token.js";
+import { sendEmail } from "../utils/sendEmail.js";
+
+const crypto = await import('node:crypto');
 
 export const register = async (req, res, next) => {
     try{
@@ -21,8 +25,18 @@ export const register = async (req, res, next) => {
             password: hash
         })
 
-        await newBooker.save()
-        res.status(200).send('Booker has been created')
+        const booker = await newBooker.save()
+
+        const token = await new Token({
+            booker: booker._id,
+            token: crypto.randomBytes(32).toString('hex')
+        }).save()
+
+        const url = `${process.env.BASE_URL}/booker/${booker._id}/verify/${token.token}`
+        
+        await sendEmail(booker.email, 'Verify Email', url)
+        
+        res.status(200).send('Email has been sent to you account. Please verify!')
     } catch(err){
         next(err)
     }
@@ -39,6 +53,23 @@ export const login = async (req, res, next) => {
         );
         if(!isPasswordCorrect) 
         return next(createError(400, 'wrong password or email!'));
+
+        if(!booker.verified) {
+            let token = await Token.findOne({
+                booker: booker._id
+            })
+            if(!token) {
+                const token = await new Token({
+                    booker: booker._id,
+                    token: crypto.randomBytes(32).toString('hex')
+                }).save()
+        
+                const url = `${process.env.BASE_URL}/booker/${booker._id}/verify/${token.token}`
+                
+                await sendEmail(booker.email, 'Verify Email', url)
+            }
+            return res.status(400).send('Email has been sent to you account. Please verify!')
+        }
 
         const token = jwt.sign({id:booker._id, isBookee: booker.isBookee, isAdmin: booker.isAdmin}, process.env.JWT);
 
