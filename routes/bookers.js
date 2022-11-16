@@ -1,5 +1,5 @@
 import express from 'express';
-import { deleteBooker, getBooker, getBookerBookings, getBookers, updateBooker } from '../controllers/booker.js';
+import { deleteBooker, getBooker, getBookerBookings, getBookers, getToken, updateBooker } from '../controllers/booker.js';
 import { verifyAdmin, verifyBookee, verifyBooker, verifyToken } from '../utils/verifyToken.js';
 
 const router = express.Router();
@@ -28,7 +28,7 @@ router.delete('/:id', verifyBooker, deleteBooker);
 
 //GET
 router.get('/:id', verifyBooker, getBooker);
-router.get('/:id/verify/:token', verifyBooker, getToken);
+router.get('/:id/verify/:token', getToken);
 
 //GET ALL
 router.get('/', verifyAdmin, getBookers);
