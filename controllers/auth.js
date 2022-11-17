@@ -32,7 +32,9 @@ export const register = async (req, res, next) => {
             token: crypto.randomBytes(32).toString('hex')
         }).save()
 
-        const url = `${process.env.BASE_URL}/booker/${booker._id}/verify/${token.token}`
+        console.log(token)
+
+        const url = `${process.env.BASE_URL}/bookers/${booker._id}/verify/${token.token}`
         
         await sendEmail(booker.email, 'Verify Email', url)
         
@@ -64,7 +66,7 @@ export const login = async (req, res, next) => {
                     token: crypto.randomBytes(32).toString('hex')
                 }).save()
         
-                const url = `${process.env.BASE_URL}/booker/${booker._id}/verify/${token.token}`
+                const url = `${process.env.BASE_URL}/bookers/${booker._id}/verify/${token.token}`
                 
                 await sendEmail(booker.email, 'Verify Email', url)
             }
