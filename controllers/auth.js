@@ -32,8 +32,6 @@ export const register = async (req, res, next) => {
             token: crypto.randomBytes(32).toString('hex')
         }).save()
 
-        console.log(token)
-
         const url = `${process.env.BASE_URL}/bookers/${booker._id}/verify/${token.token}`
         
         await sendEmail(booker.email, 'Verify Email', url)
