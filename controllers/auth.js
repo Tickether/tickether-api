@@ -32,9 +32,13 @@ export const register = async (req, res, next) => {
             token: crypto.randomBytes(32).toString('hex')
         }).save()
 
-        const url = `${process.env.BASE_URL}/bookers/${booker._id}/verify/${token.token}`
-        
-        await sendEmail(booker.email, 'Verify Email', url)
+        if (!booker.isBookee) {
+            let url = `${process.env.BASE_URL}/bookers/${booker._id}/verify/${token.token}`
+            await sendEmail(booker.email, 'Verify Email', url)
+        } else {
+            let url = `${process.env.BASE_PERFORMERS_URL}/bookers/${booker._id}/verify/${token.token}`
+            await sendEmail(booker.email, 'Verify Email', url)   
+        }
         
         res.status(200).send('Email has been sent to you account. Please verify!')
     } catch(err){
@@ -63,10 +67,14 @@ export const login = async (req, res, next) => {
                     booker: booker._id,
                     token: crypto.randomBytes(32).toString('hex')
                 }).save()
-        
-                const url = `${process.env.BASE_URL}/bookers/${booker._id}/verify/${token.token}`
                 
-                await sendEmail(booker.email, 'Verify Email', url)
+                if (!booker.isBookee) {
+                    let url = `${process.env.BASE_URL}/bookers/${booker._id}/verify/${token.token}`
+                    await sendEmail(booker.email, 'Verify Email', url)
+                } else {
+                    let url = `${process.env.BASE_PERFORMERS_URL}/bookers/${booker._id}/verify/${token.token}`
+                    await sendEmail(booker.email, 'Verify Email', url)   
+                }
             }
             return res.status(400).send('Email has been sent to you account. Please verify!')
         }
