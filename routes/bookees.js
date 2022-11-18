@@ -5,10 +5,10 @@ import { verifyAdmin, verifyBookee, verifyBooker } from '../utils/verifyToken.js
 const router = express.Router();
 
 //CREATE
-router.post('/:bookerid', verifyBookee, createBookee);
+router.post('/:bookerid', createBookee);
 
 //UPDATE
-router.put('/:id', verifyBookee, updateBookee);
+router.put('/:id', updateBookee);
 
 //DELETE
 router.delete('/:id/:bookeeid', verifyBookee, deleteBookee);
