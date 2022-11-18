@@ -40,8 +40,7 @@ export const getToken = async (req, res, next) => {
         })
         if (!token) return res.status(400).send({message: 'Invalid Link'})
 
-        await Booker.updateOne({
-            _id: booker._id,
+        await booker.updateOne({
             verified: true
         })
         await token.remove()
