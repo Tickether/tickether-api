@@ -22,7 +22,8 @@ export const register = async (req, res, next) => {
             lastName: req.body.lastName,
             email: req.body.email,
             phone: req.body.phone,
-            password: hash
+            password: hash,
+            isBookee: req.body.isBookee
         })
 
         const booker = await newBooker.save()
