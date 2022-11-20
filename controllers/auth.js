@@ -95,34 +95,7 @@ export const login = async (req, res, next) => {
         next(err);
     }
 };
-/*
-export const forgotPassword = async (req, res, next) => {
-    try {
-        const booker = await Booker.findOne({email: req.body.email});
-        if(booker) return next(createError(404, 'Email not registered. Please sign up!'));
 
-        const token = await new Token({
-            booker: booker._id,
-            token: crypto.randomBytes(32).toString('hex')
-        }).save()
-
-        
-
-        if (!booker.isBookee) {
-            let url = `${process.env.BASE_URL}/bookers/${booker._id}/verify/${token.token}`
-            await sendEmail(booker.email, 'Reset Password', url)
-        } else {
-            let url = `${process.env.BASE_PERFORMERS_URL}/bookers/${booker._id}/resetpassword/${token.token}`
-            await sendEmail(booker.email, 'Reset Password', url)   
-        } 
-
-        res.status(200).send('Reset link has been sent to you email. Please verify!')
-        
-    } catch (error) {
-        
-    }
-}
-*/
 export const forgotPassword = async (req, res, next) => {
     try {
         const booker = await Booker.findOne({email: req.body.email});
@@ -158,15 +131,18 @@ export const updatePassword = async (req, res, next) => {
             booker: booker._id,
             token: req.params.token
         })
-        if(booker && token){
-            await booker.updateOne({
-                password: hash
-            })
-            await token.remove()
-            res.status(200).send('Password successfully reset. Please Login!')
-        } else {
-            return next(createError(404, 'Invalid link!'));
-        } 
+        
+        if(!booker) return next(createError(404, 'Invalid booker link!'));
+        if(!token) return next(createError(404, 'Invalid token link!'));
+        
+        await booker.updateOne({
+            password: hash
+        })
+        
+        await token.remove()
+        
+        res.status(200).send('Password successfully reset. Please Login!')
+        
     } catch (error) {
         
     }
