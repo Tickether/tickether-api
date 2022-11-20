@@ -113,6 +113,8 @@ export const forgotPassword = async (req, res, next) => {
             let url = `${process.env.BASE_PERFORMERS_URL}/bookers/${booker._id}/resetpassword/${token.token}`
             await sendEmail(booker.email, 'Reset Password', url)   
         }
+
+        res.status(200).send('Reset link has been sent to you email. Please verify!')
         
     } catch (error) {
         
