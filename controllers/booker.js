@@ -53,9 +53,6 @@ export const getToken = async (req, res, next) => {
 
 export const getTokenReset = async (req, res, next) => {
     try{
-        const salt = bcrypt.genSaltSync(10);
-        const hash = bcrypt.hashSync(req.body.password, salt);
-
         const booker = await Booker.findOne({
             _id: req.params.id
         });
@@ -67,12 +64,7 @@ export const getTokenReset = async (req, res, next) => {
         })
         if (!token) return res.status(400).send({message: 'Invalid Link'})
 
-        await booker.updateOne({
-            password: hash
-        })
-        await token.remove()
-
-        res.status(200).send({message: 'Password reset successfully'});
+        res.status(200).send({message: 'You can now reset your password!'});
     } catch(err) {
         next(err);
     }

@@ -147,3 +147,28 @@ export const forgotPassword = async (req, res, next) => {
         
     }
 }
+
+export const updatePassword = async (req, res, next) => {
+    try {
+        const salt = bcrypt.genSaltSync(10);
+        const hash = bcrypt.hashSync(req.body.password, salt);
+
+        const booker = await Booker.findOne({email: req.body.email});
+        const token = await Token.findOne({
+            booker: booker._id,
+            token: req.params.token
+        })
+        if(booker && token){
+            await booker.updateOne({
+                password: hash
+            })
+            await token.remove()
+            res.status(200).send('Password successfully reset. Please Login!')
+        } else {
+            return next(createError(404, 'Invalid link!'));
+        } 
+    } catch (error) {
+        
+    }
+}
+
