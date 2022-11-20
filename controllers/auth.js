@@ -95,3 +95,26 @@ export const login = async (req, res, next) => {
         next(err);
     }
 };
+
+export const forgotPassword = async (req, res, next) => {
+    try {
+        const booker = await Booker.findOne({email: req.body.email});
+        if(email_info) return next(createError(404, 'Email not registered. Please sign up!'));
+
+        const token = await new Token({
+            booker: booker._id,
+            token: crypto.randomBytes(32).toString('hex')
+        }).save()
+
+        if (!booker.isBookee) {
+            let url = `${process.env.BASE_URL}/bookers/${booker._id}/verify/${token.token}`
+            await sendEmail(booker.email, 'Reset Password', url)
+        } else {
+            let url = `${process.env.BASE_PERFORMERS_URL}/bookers/${booker._id}/resetpassword/${token.token}`
+            await sendEmail(booker.email, 'Reset Password', url)   
+        }
+        
+    } catch (error) {
+        
+    }
+}
