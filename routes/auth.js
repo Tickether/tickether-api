@@ -7,6 +7,6 @@ router.post('/register', register );
 
 router.post('/login', login);
 
-router.put('/reset', forgotPassword)
+router.post('/reset', forgotPassword)
 
 export default router
