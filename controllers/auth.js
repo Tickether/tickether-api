@@ -99,7 +99,7 @@ export const login = async (req, res, next) => {
 export const forgotPassword = async (req, res, next) => {
     try {
         const booker = await Booker.findOne({email: req.body.email});
-        if(email_info) return next(createError(404, 'Email not registered. Please sign up!'));
+        if(booker) return next(createError(404, 'Email not registered. Please sign up!'));
 
         const token = await new Token({
             booker: booker._id,
