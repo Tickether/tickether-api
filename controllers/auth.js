@@ -128,8 +128,7 @@ export const updatePassword = async (req, res, next) => {
 
         const booker = await Booker.findOne({id: req.params.id});
         const token = await Token.findOne({
-            booker: booker._id,
-            token: req.params.token
+            booker: booker._id
         })
         
         if(!booker) return next(createError(404, 'Invalid booker link!'));

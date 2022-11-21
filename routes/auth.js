@@ -9,7 +9,7 @@ router.post('/login', login);
 
 router.post('/reset', forgotPassword)
 
-router.put('/resetPassword/:id/:token', updatePassword)
+router.put('/resetPassword/:id/', updatePassword)
 
 
 
