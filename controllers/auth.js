@@ -127,17 +127,22 @@ export const updatePassword = async (req, res, next) => {
         const hash = bcrypt.hashSync(req.body.password, salt);
 
         const booker = await Booker.findOne({id: req.params.id});
-        const token = await Token.findOne({booker: req.params.id})
+        const token = await Token.findOne({
+            booker: req.params.id,
+            token: req.params.token
+        })
         
         if(!booker) return next(createError(404, 'Invalid booker link!'));
         if(!token) return next(createError(404, 'Invalid token link!'));
         
-        await booker.updateOne({
-            password: hash
-        })
+        await Booker.findByIdAndUpdate(
+            req.params.id, 
+            {password: hash}, 
+            {new: true}
+        );
         
         await token.remove()
-        
+
         res.status(200).send('Password successfully reset. Please Login!')
         
     } catch (error) {
