@@ -41,10 +41,6 @@ const BookerSchema = new mongoose.Schema({
     isAdmin: {
         type: Boolean,
         default: false
-    },
-    resetLink: {
-        type: String,
-        default: ''
     }
 }, { timestamps: true } );
 

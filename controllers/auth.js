@@ -126,7 +126,7 @@ export const updatePassword = async (req, res, next) => {
         const salt = bcrypt.genSaltSync(10);
         const hash = bcrypt.hashSync(req.body.password, salt);
 
-        const booker = await Booker.findOne({email: req.body.email});
+        const booker = await Booker.findOne({id: req.params.id});
         const token = await Token.findOne({
             booker: booker._id,
             token: req.params.token
