@@ -1,5 +1,6 @@
 import Book from "../models/Book.js";
 import Bookee from "../models/Bookee.js";
+import Withdrawal from "../models/Withdrawal.js";
 
 export const createBook = async (req, res, next) => {
     const bookeeId = req.params.bookeeid;
@@ -69,3 +70,20 @@ export const getBooks = async (req, res, next) => {
         next(err);
     }
 }
+
+
+
+export const getBookWithdrawals = async (req, res, next) =>{
+    try{
+        const book = await Book.findById(req.params.id)
+        const list = await Promise.all(
+            book.withdrawals.map(withdrawal=>{
+                return Withdrawal.findById(withdrawal);
+            })
+        );
+        res.status(200).json(list)
+    }catch(err){
+        next(err);
+    }
+}
+

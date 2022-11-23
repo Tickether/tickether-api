@@ -53,6 +53,9 @@ const BookeeSchema = new mongoose.Schema({
     bookings: {
         type: [String],
     },
+    withdrawals: {
+        type: [String],
+    },
     featureBookings: {
         type: [Date]
     },

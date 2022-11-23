@@ -34,6 +34,9 @@ const BookSchema = new mongoose.Schema({
     bookings: {
         type: [String]
     },
+    withdrawals: {
+        type: [String],
+    },
 }, { timestamps: true } );
 
 export default mongoose.model('Book', BookSchema)

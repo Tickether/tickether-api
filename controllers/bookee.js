@@ -2,6 +2,7 @@ import Bookee from "../models/Bookee.js";
 import Book from "../models/Book.js";
 import Booker from "../models/Booker.js";
 import Booking from "../models/Booking.js";
+import Withdrawal from "../models/Withdrawal.js";
 
 export const createBookee = async (req, res, next) => {
     const bookerId = req.params.bookerid;
@@ -136,6 +137,24 @@ export const getBookeeBookings = async (req, res, next) =>{
         next(err);
     }
 };
+
+
+
+export const getBookeeWithdrawals = async (req, res, next) =>{
+    try{
+        const bookee = await Bookee.findById(req.params.id)
+        const list = await Promise.all(
+            bookee.withdrawals.map(withdrawal=>{
+                return Withdrawal.findById(withdrawal);
+            })
+        );
+        res.status(200).json(list)
+    }catch(err){
+        next(err);
+    }
+}
+
+
 
 
 /*
