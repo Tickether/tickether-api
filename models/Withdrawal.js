@@ -12,6 +12,10 @@ const WithdrawalSchema = new mongoose.Schema({
         ref: 'Booker',
         required: true,
     },
+    bookName: {
+        type: String,
+        required: true,
+    },
     txnHash: {
         type: String,
         required: true,

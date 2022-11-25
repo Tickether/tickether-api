@@ -3,7 +3,7 @@ import Book from "../models/Book.js";
 import Bookee from "../models/Bookee.js";
 import Withdrawal from "../models/Withdrawal.js";
 
-export const createBooking = async (req, res, next) => {
+export const createWithdrawal = async (req, res, next) => {
     const bookId = req.params.bookid;
     const bookeeId = req.params.bookeeid;
     const newWithdrawal = new Withdrawal(req.body)
@@ -12,10 +12,10 @@ export const createBooking = async (req, res, next) => {
         const savedWithdrawal = await newBooking.save();
         try {
             await Book.findByIdAndUpdate(bookId, {
-                $push: { bookings: newWithdrawal._id },
+                $push: { withdrawals: newWithdrawal._id },
             });
             await Bookee.findByIdAndUpdate(bookeeId, {
-                $push: { bookings: newWithdrawal._id },
+                $push: { withdrawals: newWithdrawal._id },
             });
         } catch (err) {
             next(err);
