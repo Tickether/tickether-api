@@ -1,5 +1,6 @@
 import Book from "../models/Book.js";
 import Bookee from "../models/Bookee.js";
+import Booking from "../models/Booking.js";
 import Withdrawal from "../models/Withdrawal.js";
 
 export const createBook = async (req, res, next) => {
@@ -67,6 +68,20 @@ export const getBooks = async (req, res, next) => {
         const books = await Book.find();
         res.status(200).json(books);
     } catch(err) {
+        next(err);
+    }
+}
+
+export const getBookBookings = async (req, res, next) =>{
+    try{
+        const book = await Book.findById(req.params.id)
+        const list = await Promise.all(
+            book.bookings.map(booking=>{
+                return Booking.findById(booking);
+            })
+        );
+        res.status(200).json(list)
+    }catch(err){
         next(err);
     }
 }

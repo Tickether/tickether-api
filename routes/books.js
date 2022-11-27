@@ -1,5 +1,5 @@
 import express from 'express';
-import { createBook, deleteBook, getBook, getBooks, getBookWithdrawals, updateBook } from '../controllers/book.js';
+import { createBook, deleteBook, getBook, getBookBookings, getBooks, getBookWithdrawals, updateBook } from '../controllers/book.js';
 import { verifyAdmin, verifyBookee } from '../utils/verifyToken.js';
 
 const router = express.Router();
@@ -18,6 +18,8 @@ router.get('/:id', getBook);
 
 //GET ALL
 router.get('/', getBooks);
+
+router.get('/bookings/:id', getBookBookings)
 
 router.get('/withdrawals/:id', getBookWithdrawals)
 
