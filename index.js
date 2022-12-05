@@ -6,6 +6,8 @@ import booksRoute from './routes/books.js'
 import bookeesRoute from './routes/bookees.js'
 import bookersRoute from './routes/bookers.js'
 import bookingsRoute from './routes/bookings.js'
+import withdrawalsRoute from './routes/withdrawals.js'
+import upgradedTokensRoute from './routes/upgradedTokens.js'
 import cookieParser from 'cookie-parser';
 import cors from "cors";
 
@@ -37,6 +39,8 @@ app.use('/api/books', booksRoute);
 app.use('/api/bookees', bookeesRoute);
 app.use('/api/bookers', bookersRoute);
 app.use('/api/bookings', bookingsRoute);
+app.use('/api/withdrawals', withdrawalsRoute);
+app.use('/api/upgradedTokens', upgradedTokensRoute);
 
 app.use((err, req, res, next) => {
     const errorStatus = err.status || 500;

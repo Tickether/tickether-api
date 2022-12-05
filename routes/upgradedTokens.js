@@ -1,5 +1,6 @@
 import express from 'express';
-import {  createUpgradedToken, updateUpgradedToken, getUpgradedTokens } from '../controllers/bookee.js';
+import { createUpgradedToken, getUpgradedTokens, updateUpgradedToken } from '../controllers/upgradedToken.js';
+
 
 const router = express.Router();
 

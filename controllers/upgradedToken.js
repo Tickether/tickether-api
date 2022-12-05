@@ -1,4 +1,4 @@
-import UpgradedToken from "../models/UpgradedToken";
+import UpgradedToken from "../models/UpgradedToken.js";
 
 export const createUpgradedToken = async (req, res, next) => {
     
