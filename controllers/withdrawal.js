@@ -9,7 +9,7 @@ export const createWithdrawal = async (req, res, next) => {
     const newWithdrawal = new Withdrawal(req.body)
 
     try{
-        const savedWithdrawal = await newBooking.save();
+        const savedWithdrawal = await newWithdrawal.save();
         try {
             await Book.findByIdAndUpdate(bookId, {
                 $push: { withdrawals: newWithdrawal._id },
